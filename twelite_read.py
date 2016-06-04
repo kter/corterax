@@ -19,6 +19,7 @@ from serial import *
 from sys import stdout, stdin, stderr, exit
 import logging
 import requests
+import json
 
 # パラメータの確認
 #   第一引数: シリアルポート名
@@ -80,9 +81,10 @@ def printPayload_0x81(l):
     
     print "  DI1=%d/%d  DI2=%d/%d  DI3=%d/%d  DI4=%d/%d" % (di[1], di_chg[1], di[2], di_chg[2], di[3], di_chg[3], di[4], di_chg[4])
     # API
-    for j in range(1,5):
-        q = {'id': j, 'status': di[j]}
-        logging.info(requests.patch('https://ne9spcv475.execute-api.ap-northeast-1.amazonaws.com/dev/toilets/update', params=q))
+    q = {"id": l[0], "status": di[1]}
+    header = {'Content-Type': 'application/json'}
+    print q
+    print requests.patch('https://mlln79nkz9.execute-api.ap-northeast-1.amazonaws.com/dev/update', data=json.dumps(q), headers=header)
     
     # AD1..4 のデータ
     ad = {}
